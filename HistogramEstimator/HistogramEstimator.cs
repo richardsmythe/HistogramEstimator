@@ -62,7 +62,6 @@ public class HistogramEstimator
         int i = FindBin(s);
         _counts[i]++;
         _totalCount++;
-
         RebalanceBins();
     }
 
@@ -116,7 +115,7 @@ public class HistogramEstimator
         Array.Copy(newBoundaries, _boundaries, newBoundaries.Length);
         Array.Clear(_counts, 0, _counts.Length);
 
-        // Redistribute the samples now across the new bins now that boundries are adjusted.
+        // Redistribute the samples across the new bins now that boundries are adjusted.
         double difference = (maxVal - minVal) / (_totalCount - 1);
         for (int j = 0; j < _totalCount; j++) 
         {
