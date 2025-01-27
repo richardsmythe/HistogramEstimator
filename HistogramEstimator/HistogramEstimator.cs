@@ -1,4 +1,6 @@
 ﻿
+using System.Security.Cryptography.X509Certificates;
+
 /// <summary>
 ///  A dynamic equi-depth histogram creation, with the rebalancing happening on every addition.
 /// </summary>
@@ -62,7 +64,7 @@ public class HistogramEstimator
         int i = FindBin(s);
         _counts[i]++;
         _totalCount++;
-        RebalanceBins();
+        RebalanceBins(); // NB - This will discard previous states.
     }
 
     /// <summary>
@@ -99,15 +101,57 @@ public class HistogramEstimator
             if (closestIndex < 0) closestIndex = ~closestIndex;
 
             double lowerBoundary = closestIndex > 0 ? _boundaries[closestIndex] : minVal;
-            double upperBoundary = closestIndex < _boundaries.Length - 1 ? _boundaries[closestIndex + 1] : maxVal;
+            double upperBoundary;
+            if (closestIndex < _boundaries.Length - 1)
+            {
+                upperBoundary = _boundaries[closestIndex + 1];
+            }
+            else
+            {
+                upperBoundary = (double)maxVal;
+            }
 
-            int lowerBoundIndex = closestIndex > 0 ? closestIndex : 0;
-            int upperBoundIndex = closestIndex < _boundaries.Length - 1 ? closestIndex + 1 : _boundaries.Length - 1;
+            int lowerBoundIndex;
+            if (closestIndex > 0)
+            {
+                lowerBoundIndex = closestIndex;
+            }
+            else
+            {
+                lowerBoundIndex = 0;
+            }
 
-            int previousCount = lowerBoundIndex > 0 ? runningTotal[lowerBoundIndex - 1] : 0;
+            int upperBoundIndex;
+            if (closestIndex < _boundaries.Length - 1)
+            {
+                upperBoundIndex = closestIndex + 1;
+            }
+            else
+            {
+                upperBoundIndex = _boundaries.Length - 1;
+            }
+
+            int previousCount;
+            if (lowerBoundIndex > 0)
+            {
+                previousCount = runningTotal[lowerBoundIndex - 1];
+            }
+            else
+            {
+                previousCount = 0;
+            }
+
             int currentBinCount = runningTotal[upperBoundIndex - 1] - previousCount;
 
-            double proportion = currentBinCount > 0 ? (double)(targetRunningTotal - previousCount) / currentBinCount : 0;
+            double proportion;
+            if (currentBinCount > 0)
+            {
+                proportion = (double)((double)(targetRunningTotal - previousCount) / currentBinCount);
+            }
+            else
+            {
+                proportion = 0;
+            }
 
             newBoundaries[boundaryIndex++] = lowerBoundary + proportion * (upperBoundary - lowerBoundary);
         }
@@ -125,8 +169,8 @@ public class HistogramEstimator
             {
                 _counts[binIndex]++;
             }
-        }
-    }
+        }        
+    }   
 }
 
 
