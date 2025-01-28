@@ -1,7 +1,4 @@
-﻿
-using System.Security.Cryptography.X509Certificates;
-
-/// <summary>
+﻿/// <summary>
 ///  A dynamic equi-depth histogram creation, with the rebalancing happening on every addition.
 /// </summary>
 public class HistogramEstimator
@@ -43,7 +40,6 @@ public class HistogramEstimator
     /// <summary>
     /// Adds a new sample to the histogram.
     /// </summary>
-    /// <param name="s"></param>
     public void Add(double s)
     {
         if (_totalCount == 0)

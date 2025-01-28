@@ -7,8 +7,8 @@ internal class Program
     public static void Main()
     {
 
-        var histogramEstimator = new HistogramEstimator(5);
-        double[] sampleData = DataGenerator.GenerateDiverseData(10, 0, 100);
+        var histogramEstimator = new HistogramEstimator(10);
+        double[] sampleData = DataGenerator.GenerateDiverseData(100, 0, 100);
 
         foreach (double dataPoint in sampleData)
         {
