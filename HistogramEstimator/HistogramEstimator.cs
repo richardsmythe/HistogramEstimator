@@ -1,5 +1,6 @@
 ﻿/// <summary>
-///  A dynamic equi-depth histogram creation, with the rebalancing happening on every addition.
+///  A dynamic equi-depth histogram creation, with the rebalancing happening on every addition. It does not preserve the original shape of the distribution.
+///  Instead, it adjusts the bin widths to ensure each bin contains roughly the same number of data points.
 /// </summary>
 public class HistogramEstimator
 {

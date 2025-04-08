@@ -1,14 +1,9 @@
-﻿using System.ComponentModel;
-using System.Net;
-using System.Reflection.Metadata.Ecma335;
-
-internal class Program
+﻿internal class Program
 {
     public static void Main()
     {
-
         var histogramEstimator = new HistogramEstimator(10);
-        double[] sampleData = DataGenerator.GenerateDiverseData(100, 0, 100);
+        double[] sampleData = DataGenerator.GenerateExponentialData(1000,1.0);
 
         foreach (double dataPoint in sampleData)
         {
